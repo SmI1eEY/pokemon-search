@@ -1,0 +1,30 @@
+name: build application and publish the artifact
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+          cache: "npm"
+
+      - name: Install
+        run: npm ci
+
+      - name: Compile
+        run: npm run build
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-assets
+          path: dist
