@@ -1,39 +1,32 @@
 import './App.css'
 import React, { useState } from 'react'
+import Tabla from './components/Tabla.jsx'
+import icon from "./assets/psyduck.png"
 
 export default function App() {
   const [numnum, setNumnum] = useState("")
   const [dota, setDota] = useState(null)
   async function fetchData() {
     try{
-      const response = await fetch(`https://thronesapi.com/api/v2/Characters/${numnum}`, {method: "GET"})
+      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${numnum}`, {method: "GET"})
       if(!response.ok){
         throw new Error("request could not be fetched")
       }
       const data = await response.json()
-      console.log(data)
       setDota(data)
+      console.log(data)
     } catch {
       console.error("Error fetching data")
-    }
-}
+    }}
+const name = numnum.charAt(0).toUpperCase() + numnum.slice(1)
 return (
       <>
-        <h1>Game of Thrones Character</h1>
-        <p>Character ID: {numnum}</p>
-        <input type="text" id='mukki' onChange={(e)=> setNumnum(e.target.value)} />
-        <button type="submit" onClick={fetchData} id='fetc'>Fetch</button>
-        {numnum === "" ? (
-        <p>Please enter a character ID.</p>
-        ) : numnum <= 0 || numnum > 53 ? (
-        <p>Character ID must be between 1 and 53.</p>
-        ) : (
-        <p>Fetching data for character ID: {numnum}</p>
-        )}
-        {dota && <>
-        <h2>{dota.fullName}</h2>
-        <img src={dota.imageUrl} alt={dota.fullName} id='imu' />
-        </>}
+      <img src={icon} alt="Icon" />
+      <h1>Pokemon Character</h1>
+      <h2>Enter a Pokemon Name</h2>
+        <input type="text" id='inpu' onChange={(e)=> setNumnum(e.target.value)} />
+        <button type="submit"  id='fetc' onClick={fetchData}>Fetch</button>
+      {dota && <Tabla dota={dota} />}
       </>
     )
 }
